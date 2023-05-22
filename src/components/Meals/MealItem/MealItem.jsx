@@ -1,3 +1,4 @@
+import MealItemForm from "./MealItemForm";
 import "./MealItem.css";
 
 const MealItem = ({ name, description, price }) => {
@@ -9,7 +10,9 @@ const MealItem = ({ name, description, price }) => {
         <div className="description">{description}</div>
         <div className="price">{cost}</div>
       </div>
-      <div>{}</div>
+      <div>
+        <MealItemForm />
+      </div>
     </li>
   );
 };
