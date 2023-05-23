@@ -1,7 +1,7 @@
 import MealItemForm from "./MealItemForm";
 import "./MealItem.css";
 
-const MealItem = ({ name, description, price }) => {
+const MealItem = ({ name, description, price, id }) => {
   const cost = `£${price.toFixed(2)}`;
   return (
     <li className="meal">
@@ -11,7 +11,7 @@ const MealItem = ({ name, description, price }) => {
         <div className="price">{cost}</div>
       </div>
       <div>
-        <MealItemForm />
+        <MealItemForm id={id} />
       </div>
     </li>
   );
