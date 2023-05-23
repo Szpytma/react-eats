@@ -19,7 +19,7 @@ const Cart = ({ onClose }) => {
         <button className="button--alt" onClick={onClose}>
           Close
         </button>
-        <button className="button--alt">Order</button>
+        <button className="button">Order</button>
       </div>
     </Modal>
   );

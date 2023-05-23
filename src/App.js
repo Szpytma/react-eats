@@ -3,6 +3,7 @@ import Cart from "./components/Cart/Cart";
 import Footer from "./components/Layout/Footer";
 import Header from "./components/Layout/Header";
 import Meals from "./components/Meals/Meals";
+import CartProvider from "./store/CartProvider";
 
 function App() {
   const [cartIsActive, setCartIsActive] = useState(false);
@@ -15,14 +16,14 @@ function App() {
   };
 
   return (
-    <>
+    <CartProvider>
       {cartIsActive && <Cart onClose={hideCartHandler} />}
       <Header onShowCart={showCartHandler} />
       <main>
         <Meals />
       </main>
       <Footer />
-    </>
+    </CartProvider>
   );
 }
 

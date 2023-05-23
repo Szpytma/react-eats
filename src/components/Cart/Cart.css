@@ -14,7 +14,17 @@
 }
 
 .actions {
+  display: flex;
+  flex-direction: row-reverse;
   text-align: right;
+}
+.actions .button--alt {
+  color: #8a2b06;
+}
+
+.actions .button {
+  background-color: #8a2b06;
+  color: white;
 }
 
 .actions button {
@@ -31,14 +41,5 @@
 .actions button:active {
   background-color: #5a1a01;
   border-color: #5a1a01;
-  color: white;
-}
-
-.actions .button--alt {
-  color: #8a2b06;
-}
-
-.actions .button {
-  background-color: #8a2b06;
   color: white;
 }
