@@ -8,21 +8,29 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [httpError, setHttpError] = useState(null);
 
   useEffect(() => {
     const fetchMeals = async () => {
-      const response = await fetch(`${baseUrl}/meals.json`);
-      const responseData = await response.json();
-      const loadedMeals = [];
-      for (const key in responseData) {
-        loadedMeals.push({
-          id: key,
-          name: responseData[key].name,
-          description: responseData[key].description,
-          price: responseData[key].price,
-        });
+      try {
+        const response = await fetch(`${baseUrl}/meals.json`);
+        if (!response.ok) {
+          throw new Error("Something went wrong!");
+        }
+        const responseData = await response.json();
+        const loadedMeals = [];
+        for (const key in responseData) {
+          loadedMeals.push({
+            id: key,
+            name: responseData[key].name,
+            description: responseData[key].description,
+            price: responseData[key].price,
+          });
+        }
+        setMeals(loadedMeals);
+      } catch (error) {
+        setHttpError(error.message);
       }
-      setMeals(loadedMeals);
       setIsLoading(false);
     };
 
@@ -30,7 +38,7 @@ const AvailableMeals = () => {
   }, []);
 
   if (isLoading) return <LoadingSpinner />;
-
+  if (httpError) return <section className="MealsError">{httpError}</section>;
   const mealsList = meals.map((meal) => (
     <MealItem
       key={meal.id}

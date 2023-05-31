@@ -16,7 +16,7 @@ To run that project on your local machine you will need
 In the project directory, you can run:
 
 1. ### `npm install`
-2. ### `create .env file in the root of the project and add REACT_APP_BASE_URL pointing to your Realtime Database on Firebase`
+2. ### create .env file in the root of the project and add `REACT_APP_BASE_URL` pointing to your Realtime Database on Firebase
 3. ### `npm start`
 
 Runs the app in the development mode.\
