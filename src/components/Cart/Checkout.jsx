@@ -1,33 +1,44 @@
+import { useRef } from "react";
 import "./Checkout.css";
 
 const Checkout = ({ onCancel }) => {
+  const nameInputRef = useRef();
+  const streetInputRef = useRef();
+  const postalInputRef = useRef();
+  const cityInputRef = useRef();
+
   const confirmHandler = (e) => {
     e.preventDefault();
-    console.log("sss");
+    const enteredName = nameInputRef.current;
+    const enteredStreet = streetInputRef.current;
+    const enteredPostal = postalInputRef.current;
+    const enteredCity = cityInputRef.current;
   };
 
   return (
-    <form onSubmit={confirmHandler}>
-      <div className="control">
+    <form className="checkout-form" onSubmit={confirmHandler}>
+      <div className="checkout-control">
         <label htmlFor="name">Your Name</label>
-        <input type="text" id="name"></input>
+        <input type="text" id="name" ref={nameInputRef} />
       </div>
-      <div className="control">
+      <div className="checkout-control">
         <label htmlFor="street">Street</label>
-        <input type="text" id="street"></input>
+        <input type="text" id="street" ref={streetInputRef} />
       </div>
-      <div className="control">
+      <div className="checkout-control">
         <label htmlFor="postal">Postal Code</label>
-        <input type="text" id="postal"></input>
+        <input type="text" id="postal" ref={postalInputRef} />
       </div>
-      <div className="city">
-        <label htmlFor="postal">City</label>
-        <input type="text" id="city"></input>
+      <div className="checkout-control">
+        <label htmlFor="city">City</label>
+        <input type="text" id="city" ref={cityInputRef} />
       </div>
-      <button type="button" onClick={onCancel}>
-        Cancel
-      </button>
-      <button>Confirm</button>
+      <div className="checkout-actions">
+        <button className="checkout-cancel" type="button" onClick={onCancel}>
+          Cancel
+        </button>
+        <button className="checkout-submit">Confirm</button>
+      </div>
     </form>
   );
 };
