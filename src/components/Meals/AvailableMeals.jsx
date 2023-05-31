@@ -1,35 +1,37 @@
+import { useEffect, useState } from "react";
 import Card from "../UI/Card";
 import "./AvailableMeals.css";
 import MealItem from "./MealItem/MealItem";
-const DUMMY_MEALS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-    price: 22.99,
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-    price: 16.5,
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-    price: 12.99,
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-    price: 18.99,
-  },
-];
+import LoadingSpinner from "../UI/LoadingSpinner";
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const AvailableMeals = () => {
-  const mealsList = DUMMY_MEALS.map((meal) => (
+  const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMeals = async () => {
+      const response = await fetch(`${baseUrl}/meals.json`);
+      const responseData = await response.json();
+      const loadedMeals = [];
+      for (const key in responseData) {
+        loadedMeals.push({
+          id: key,
+          name: responseData[key].name,
+          description: responseData[key].description,
+          price: responseData[key].price,
+        });
+      }
+      setMeals(loadedMeals);
+      setIsLoading(false);
+    };
+
+    fetchMeals();
+  }, []);
+
+  if (isLoading) return <LoadingSpinner />;
+
+  const mealsList = meals.map((meal) => (
     <MealItem
       key={meal.id}
       id={meal.id}
