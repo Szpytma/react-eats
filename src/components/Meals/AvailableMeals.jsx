@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import Card from "../UI/Card";
 import "./AvailableMeals.css";
 import MealItem from "./MealItem/MealItem";
+import LoadingSpinner from "../UI/LoadingSpinner";
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -21,10 +23,13 @@ const AvailableMeals = () => {
         });
       }
       setMeals(loadedMeals);
+      setIsLoading(false);
     };
 
     fetchMeals();
   }, []);
+
+  if (isLoading) return <LoadingSpinner />;
 
   const mealsList = meals.map((meal) => (
     <MealItem
