@@ -8,7 +8,7 @@ const isEmpty = (value) => value.trim() === "";
 // const isNotFiveChars = (value) => value.match(regexp).length === 5;
 const isUKPostCode = (value) => value.match(regexp);
 
-const Checkout = ({ onCancel }) => {
+const Checkout = ({ onCancel, onConfirm }) => {
   const [formInputValidity, setFormInputValidity] = useState({
     name: true,
     street: true,
@@ -27,7 +27,6 @@ const Checkout = ({ onCancel }) => {
     const enteredStreet = streetInputRef.current.value;
     const enteredPostal = postalInputRef.current.value;
     const enteredCity = cityInputRef.current.value;
-    console.log(enteredName);
     const enteredNameIsValid = !isEmpty(enteredName);
     const enteredStreetIsValid = !isEmpty(enteredStreet);
     const enteredPostalIsValid = isUKPostCode(enteredPostal);
@@ -48,6 +47,13 @@ const Checkout = ({ onCancel }) => {
     if (!formIsValid) {
       return;
     }
+
+    onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      city: enteredCity,
+      postalCode: enteredPostal,
+    });
   };
   const nameControlStyle = `checkout-control ${
     formInputValidity.name ? "" : "checkout-invalid"

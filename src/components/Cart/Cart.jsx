@@ -4,7 +4,7 @@ import "./Cart.css";
 import CartContext from "../../store/cart-context";
 import CartItem from "./CartItem";
 import Checkout from "./Checkout";
-
+const baseUrl = process.env.REACT_APP_BASE_URL;
 const Cart = ({ onClose }) => {
   const [isCheckout, setIsCheckout] = useState(false);
 
@@ -21,7 +21,15 @@ const Cart = ({ onClose }) => {
   const orderHandler = () => {
     setIsCheckout(true);
   };
-
+  const submitOrderHandler = (userData) => {
+    fetch(`${baseUrl}/orders.json`, {
+      method: "POST",
+      body: JSON.stringify({
+        user: userData,
+        orderedItems: cartCtx.items,
+      }),
+    });
+  };
   const cartItems = (
     <ul className="cart-items">
       {cartCtx.items.map((item) => (
@@ -57,7 +65,9 @@ const Cart = ({ onClose }) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onCancel={onClose} />}
+      {isCheckout && (
+        <Checkout onConfirm={submitOrderHandler} onCancel={onClose} />
+      )}
       {!isCheckout && modalActions}
     </Modal>
   );
