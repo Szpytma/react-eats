@@ -1,10 +1,16 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Modal from "../UI/Modal";
 import "./Cart.css";
 import CartContext from "../../store/cart-context";
 import CartItem from "./CartItem";
-
+import Checkout from "./Checkout";
+import LoadingSpinner from "../UI/LoadingSpinner";
+const baseUrl = process.env.REACT_APP_BASE_URL;
 const Cart = ({ onClose }) => {
+  const [isCheckout, setIsCheckout] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
+
   const cartCtx = useContext(CartContext);
   const totalAmount = `£${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
@@ -15,7 +21,22 @@ const Cart = ({ onClose }) => {
   const cartItemAddHandler = (item) => {
     cartCtx.addItem({ ...item, amount: 1 });
   };
-
+  const orderHandler = () => {
+    setIsCheckout(true);
+  };
+  const submitOrderHandler = async (userData) => {
+    setIsSubmitting(true);
+    await fetch(`${baseUrl}/orders.json`, {
+      method: "POST",
+      body: JSON.stringify({
+        user: userData,
+        orderedItems: cartCtx.items,
+      }),
+    });
+    setIsSubmitting(false);
+    setDidSubmit(true);
+    cartCtx.clearCart();
+  };
   const cartItems = (
     <ul className="cart-items">
       {cartCtx.items.map((item) => (
@@ -30,19 +51,55 @@ const Cart = ({ onClose }) => {
       ))}
     </ul>
   );
-  return (
-    <Modal onClose={onClose}>
+
+  const modalActions = (
+    <div className="actions">
+      <button className="button--alt" onClick={onClose}>
+        Close
+      </button>
+      {hasItems && (
+        <button className="button" onClick={orderHandler}>
+          Order
+        </button>
+      )}
+    </div>
+  );
+
+  const cartModalContent = (
+    <>
       {cartItems}
       <div className="total">
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
+      {isCheckout && (
+        <Checkout onConfirm={submitOrderHandler} onCancel={onClose} />
+      )}
+      {!isCheckout && modalActions}
+    </>
+  );
+
+  const isSubmittingModalContent = (
+    <LoadingSpinner msg={"Sending order data"} />
+  );
+
+  const didSubmitModalContent = (
+    <>
+      <p className="success">
+        Thank you for the order, we are preparing your delicious food!
+      </p>
       <div className="actions">
-        <button className="button--alt" onClick={onClose}>
+        <button className="button" onClick={onClose}>
           Close
         </button>
-        {hasItems && <button className="button">Order</button>}
       </div>
+    </>
+  );
+  return (
+    <Modal onClose={onClose}>
+      {!isSubmitting && !didSubmit && cartModalContent}
+      {isSubmitting && isSubmittingModalContent}
+      {!isSubmitting && didSubmit && didSubmitModalContent}
     </Modal>
   );
 };
