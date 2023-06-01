@@ -6,7 +6,14 @@
 @media screen {
   .checkout-form {
     margin: 1rem 0;
-    height: 10rem;
+    height: 19rem;
+    overflow: auto;
+  }
+}
+@media (max-width: 375px) {
+  .checkout-form {
+    margin: 1rem 0;
+    height: 9rem;
     overflow: auto;
   }
 }
