@@ -1,9 +1,9 @@
 import { FaSpinner } from "react-icons/fa";
 import "./LoadingSpinner.css";
-function LoadingSpinner() {
+function LoadingSpinner({ msg }) {
   return (
     <div className="LoadingSpinner">
-      <p>Loading</p>
+      <p>{msg}</p>
       <FaSpinner className="LoadingSpinner-icon" />
     </div>
   );

@@ -37,7 +37,7 @@ const AvailableMeals = () => {
     fetchMeals();
   }, []);
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner msg={"Loading"} />;
   if (httpError) return <section className="MealsError">{httpError}</section>;
   const mealsList = meals.map((meal) => (
     <MealItem
